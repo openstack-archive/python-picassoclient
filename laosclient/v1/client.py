@@ -16,24 +16,23 @@ from laosclient.v1 import routes
 
 
 class Client(object):
-    """Client for the Functions v1 API.
-
-    :param session: a keystoneauth session object
-    :type session: keystoneauth1.session.Session
-    :param str service_type: The default service_type for URL discovery
-    :param str interface: The default interface for URL discovery
-                          (Default: public)
-    :param str region_name: The default region_name for URL discovery
-    :param str endpoint_override: Always use this endpoint URL for requests
-                                  for this laosclient
-    :param auth: An auth plugin to use instead of the session one
-    :type auth: keystoneauth1.plugin.BaseAuthPlugin
-    :param str user_agent: The User-Agent string to set
-                           (Default is python-laosclient)
-    """
-
     def __init__(self, *args, **kwargs):
-        """Initialize a new client for the Functions v1 API."""
+        """
+        Client for the Functions v1 API.
+
+        :param session: a keystoneauth session object
+        :type session: keystoneauth1.session.Session
+        :param str service_type: The default service_type for URL discovery
+        :param str interface: The default interface for URL discovery
+                              (Default: public)
+        :param str region_name: The default region_name for URL discovery
+        :param str endpoint_override: Always use this endpoint URL for requests
+                                      for this laosclient
+        :param auth: An auth plugin to use instead of the session one
+        :type auth: keystoneauth1.plugin.BaseAuthPlugin
+        :param str user_agent: The User-Agent string to set
+                               (Default is python-laosclient)
+        """
         self.http_client = client.construct_http_client(*args, **kwargs)
         self.apps = apps.Apps(self.http_client)
         self.routes = routes.Routes(self.http_client)
