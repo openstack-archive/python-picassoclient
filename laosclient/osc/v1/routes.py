@@ -114,7 +114,8 @@ class CreateAppRoute(command.ShowOne):
             try:
                 config = json.loads(config)
             except Exception as ex:
-                self.log.error("Invalid config JSON: Reason: {}".format(str(ex)))
+                self.log.error("Invalid config JSON. "
+                               "Reason: {}".format(str(ex)))
                 raise ex
 
         new_route = fc.routes.create(app, r_type, route, image,

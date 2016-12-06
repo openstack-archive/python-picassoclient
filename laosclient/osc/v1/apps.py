@@ -70,7 +70,8 @@ class CreateApp(command.ShowOne):
         parser.add_argument("name", metavar="<name>",
                             help="App name to create")
         parser.add_argument("--config", metavar="<config>",
-                            help="Config for app to create in JSON format")
+                            help="Config for app to create "
+                                 "in JSON format")
         return parser
 
     def take_action(self, parsed_args):
@@ -82,7 +83,8 @@ class CreateApp(command.ShowOne):
             try:
                 config = json.loads(config)
             except Exception as ex:
-                self.log.error("Invalid config JSON: Reason: {}".format(str(ex)))
+                self.log.error("Invalid config JSON. "
+                               "Reason: {}".format(str(ex)))
                 raise ex
 
         app = fc.apps.create(app_name, config=config)["app"]
@@ -116,7 +118,8 @@ class UpdateApp(command.ShowOne):
         parser.add_argument("name", metavar="<app-name>",
                             help="App name to delete")
         parser.add_argument("config", metavar="<config>",
-                            help="Config for app to create in JSON format")
+                            help="Config for app to "
+                                 "create in JSON format")
         return parser
 
     def take_action(self, parsed_args):

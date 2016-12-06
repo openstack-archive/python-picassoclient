@@ -26,22 +26,35 @@ class Routes(object):
         self.client = session_client
 
     @client.inject_project_id
-    def create(self, project_id, app_name, execution_type,
-               route_path, image, is_public=False, memory=None,
-               timeout=None, max_concurrency=None, config=None):
+    def create(self, project_id: str, app_name: str,
+               execution_type: str, route_path: str, image: str,
+               is_public: bool=False, memory: int=None,
+               timeout: int=None, max_concurrency: int=None,
+               config: dict=None):
         """
-        Creates an app route
+        Creates app route
 
-        :param app_name:
-        :param execution_type:
-        :param route_path:
-        :param image:
-        :param is_public:
-        :param memory:
-        :param timeout:
-        :param max_concurrency:
-        :param config:
-        :return:
+        :param app_name: App name
+        :type app_name: str
+        :param execution_type: App route execution type (async, sync)
+        :type execution_type: str
+        :param route_path: App route path
+        :type route_path: str
+        :param image: Docker image reference
+        :type image: str
+        :param is_public: Whether app route is public or private
+        :type is_public: bool
+        :param memory: App route RAM to allocate
+        :type memory: int
+        :param timeout: App route execution time frame
+        :type timeout: int
+        :param max_concurrency: Number of app route max concurrent
+            requests before container dies
+        :type max_concurrency: int
+        :param config: App route config
+        :type config: dict
+        :return: App route
+        :rtype: dict
         """
         body = {
             "route": {
@@ -62,23 +75,30 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def list(self, project_id, app_name):
+    def list(self, project_id: str, app_name: str):
         """
+        Lists project-scoped app routes
 
-        :param app_name:
-        :return:
+        :param app_name: App route
+        :type app_name: str
+        :return: list of routes
+        :rtype: list of dict
         """
         response = self.client.get(self.routes_path.format(
             project_id=project_id, app=app_name))
         return response.json()
 
     @client.inject_project_id
-    def show(self, project_id, app_name, route_path):
+    def show(self, project_id: str, app_name: str, route_path: str):
         """
+        Retrieves app route information
 
-        :param app_name:
-        :param route_path:
-        :return:
+        :param app_name: App name
+        :type app_name: str
+        :param route_path: App route path
+        :type route_path: str
+        :return: App route
+        :rtype: dict
         """
         response = self.client.get(self.route_path.format(
             project_id=project_id, app=app_name,
@@ -86,13 +106,19 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def update(self, project_id, app_name, route_path, **data):
+    def update(self, project_id: str, app_name: str,
+               route_path: str, **data: str):
         """
+        Updates route with provided data
 
-        :param app_name:
-        :param route_path:
+        :param app_name: App name
+        :type app_name: str
+        :param route_path: App route to update
+        :type route_path: str
         :param data:
-        :return:
+        :type data: dict
+        :return: App route
+        :rtype: dict
         """
         response = self.client.put(self.route_path.format(
             project_id=project_id, app=app_name,
@@ -100,12 +126,15 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def delete(self, project_id, app_name, route_path):
+    def delete(self, project_id: str, app_name: str, route_path: str):
         """
+        Deletes app
 
-        :param app_name:
-        :param route_path:
-        :return:
+        :param app_name: App name
+        :type app_name: str
+        :param route_path: App route path
+        :return: None
+        :rtype: None
         """
         response = self.client.delete(
             self.route_path.format(
@@ -114,13 +143,22 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def execute(self, project_id, app_name, route_path, **data):
+    def execute(self, project_id: str, app_name: str, route_path: str,
+                supply_auth_properties: bool=False, **data: dict):
         """
+        Runs execution against public/private routes
 
-        :param app_name:
-        :param route_path:
-        :param data:
-        :return:
+        :param app_name: App name
+        :type app_name: str
+        :param route_path: App route path
+        :type route_path: str
+        :param supply_auth_properties: Whether to include auth properties
+            like OS_AUTH_URL and OS_TOKEN into execution parameters data
+        :type supply_auth_properties: bool
+        :param data: execution data
+        :type data: dict
+        :return: execution result, depends on the type of execution
+        :rtype: dict
         """
         route = self.show(app_name, route_path)
         is_public = json.loads(route.get("is_public"))
@@ -129,5 +167,8 @@ class Routes(object):
                self.private_execution.format(
                    project_id=project_id, app=app_name,
                    route_path=route_path))
+        if supply_auth_properties:
+            data.update(OS_AUTH_URL=self.client.auth.auth_url,
+                        OS_TOKEN=self.client.get_token())
         response = self.client.post(url, json=data)
         return response.json()
