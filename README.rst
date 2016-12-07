@@ -4,7 +4,7 @@ python-picassoclient
 
 OpenStack Functions Client Library
 
-This is a client library for Project LaOS built on the Project LaOS API. It
+This is a client library for Picasso built on the Picasso API. It
 provides a Python API (the ``picassoclient`` module).
 
 The project is hosted on `Launchpad`_, where bugs can be filed. The code is
@@ -70,7 +70,7 @@ All further commands in this section should be run with the venv active:
 Command-line API
 ----------------
 
-Set Keystone environment variables to execute CLI commands against LaOS.
+Set Keystone environment variables to execute CLI commands against Picasso.
 
 * To execute CLI commands::
 
