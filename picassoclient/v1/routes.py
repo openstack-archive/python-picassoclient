@@ -10,16 +10,14 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import json
-
-from laosclient import client
+from picassoclient import client
 
 
 class Routes(object):
 
     routes_path = "/v1/{project_id}/apps/{app}/routes"
     route_path = "/v1/{project_id}/apps/{app}/routes{route_path}"
-    private_execution = "/v1/r/{app}{route_path}"
+    private_execution = "/v1/r/{project_id}/{app}{route_path}"
     public_execution = "/r/{app}{route_path}"
 
     def __init__(self, session_client: client.SessionClient):
@@ -161,14 +159,14 @@ class Routes(object):
         :rtype: dict
         """
         route = self.show(app_name, route_path)
-        is_public = json.loads(route.get("is_public"))
+        is_public = route["route"].get("is_public")
         url = (self.public_execution.format(
             app=app_name, route_path=route_path) if is_public else
                self.private_execution.format(
                    project_id=project_id, app=app_name,
                    route_path=route_path))
         if supply_auth_properties:
-            data.update(OS_AUTH_URL=self.client.auth.auth_url,
+            data.update(OS_AUTH_URL=self.client.session.auth.auth_url,
                         OS_TOKEN=self.client.get_token())
         response = self.client.post(url, json=data)
         return response.json()

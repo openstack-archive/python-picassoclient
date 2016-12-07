@@ -10,7 +10,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from laosclient import client
+from picassoclient import client
 
 
 class Apps(object):

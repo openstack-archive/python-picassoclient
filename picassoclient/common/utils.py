@@ -17,7 +17,7 @@ from oslo_utils import importutils
 
 
 def import_versioned_module(version, submodule=None):
-    module = 'laosclient.%s' % version
+    module = 'picassoclient.%s' % version
     if submodule:
         module = '.'.join((module, submodule))
     return importutils.import_module(module)

@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-"""oslo_i18n integration module for laosclient.
+"""oslo_i18n integration module for picassoclient.
 
 See http://docs.openstack.org/developer/oslo.i18n/usage.html .
 
@@ -19,7 +19,7 @@ See http://docs.openstack.org/developer/oslo.i18n/usage.html .
 import oslo_i18n
 
 
-_translators = oslo_i18n.TranslatorFactory(domain='laosclient')
+_translators = oslo_i18n.TranslatorFactory(domain='picassoclient')
 
 # The primary translation function using the well-known name "_"
 _ = _translators.primary

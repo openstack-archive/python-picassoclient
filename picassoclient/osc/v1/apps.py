@@ -61,7 +61,7 @@ class ShowApp(command.ShowOne):
 
 
 class CreateApp(command.ShowOne):
-    """Creates an app"""
+    """Creates app"""
 
     log = logging.getLogger(__name__ + ".CreateApp")
 
@@ -71,7 +71,7 @@ class CreateApp(command.ShowOne):
                             help="App name to create")
         parser.add_argument("--config", metavar="<config>",
                             help="Config for app to create "
-                                 "in JSON format")
+                                 "in JSON format", type=json.loads)
         return parser
 
     def take_action(self, parsed_args):
@@ -79,13 +79,6 @@ class CreateApp(command.ShowOne):
         fc = self.app.client_manager.functions
         app_name = parsed_args.name
         config = parsed_args.config
-        if config:
-            try:
-                config = json.loads(config)
-            except Exception as ex:
-                self.log.error("Invalid config JSON. "
-                               "Reason: {}".format(str(ex)))
-                raise ex
 
         app = fc.apps.create(app_name, config=config)["app"]
         keys = list(app.keys())
@@ -93,7 +86,7 @@ class CreateApp(command.ShowOne):
 
 
 class DeleteApp(command.Command):
-    """Deletes an app"""
+    """Deletes app"""
     log = logging.getLogger(__name__ + ".DeleteApp")
 
     def get_parser(self, prog_name):
@@ -110,7 +103,7 @@ class DeleteApp(command.Command):
 
 
 class UpdateApp(command.ShowOne):
-    """Deletes an app"""
+    """Updates app"""
     log = logging.getLogger(__name__ + ".UpdateApp")
 
     def get_parser(self, prog_name):
@@ -119,15 +112,14 @@ class UpdateApp(command.ShowOne):
                             help="App name to delete")
         parser.add_argument("config", metavar="<config>",
                             help="Config for app to "
-                                 "create in JSON format")
+                                 "create in JSON format",
+                            type=json.loads)
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
         fc = self.app.client_manager.functions
-        app_name = parsed_args.name
-        fc.apps.update(app_name)
-        config = parsed_args.config
+        app_name, config = parsed_args.name, parsed_args.config
         if not config:
             raise Exception("Nothing to update. "
                             "App config was not specified.")
