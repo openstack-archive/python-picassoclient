@@ -20,7 +20,7 @@ class Routes(object):
     private_execution = "/v1/r/{project_id}/{app}{route_path}"
     public_execution = "/r/{app}{route_path}"
 
-    def __init__(self, session_client: client.SessionClient):
+    def __init__(self, session_client):
         self.client = session_client
 
     @client.inject_project_id
@@ -142,7 +142,7 @@ class Routes(object):
 
     @client.inject_project_id
     def execute(self, project_id, app_name, route_path,
-                supply_auth_properties: bool=False, **data: dict):
+                supply_auth_properties=False, **data):
         """
         Runs execution against public/private routes
 
