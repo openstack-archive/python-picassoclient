@@ -1,22 +1,21 @@
 ========================
-python-laosclient
+python-picassoclient
 ========================
 
 OpenStack Functions Client Library
 
 This is a client library for Project LaOS built on the Project LaOS API. It
-provides a Python API (the ``laosclient`` module) and a command-line
-tool (``laos``).
+provides a Python API (the ``picassoclient`` module).
 
 The project is hosted on `Launchpad`_, where bugs can be filed. The code is
 hosted on `Github`_. Patches must be submitted using `Gerrit`_, *not* Github
 pull requests.
 
-.. _Github: https://github.com/iron-io/python-laosclient
-.. _Launchpad: https://github.com/iron-io/python-laosclient/issues
+.. _Github: https://github.com/iron-io/python-picassoclient
+.. _Launchpad: https://github.com/iron-io/python-picassoclient/issues
 .. _Gerrit: http://docs.openstack.org/infra/manual/developers.html#development-workflow
 
-python-laosclient is licensed under the Apache License like the rest of
+python-picassoclient is licensed under the Apache License like the rest of
 OpenStack.
 
 .. contents:: Contents:
@@ -24,31 +23,31 @@ OpenStack.
 
 Install the client from PyPI
 ----------------------------
-The :program:`python-laosclient` package is published on `PyPI`_ and
+The :program:`python-picassoclient` package is published on `PyPI`_ and
 so can be installed using the pip tool, which will manage installing all
 python dependencies::
 
-   $ pip install python-laosclient
+   $ pip install python-picassoclient
 
 .. note::
    The packages on PyPI may lag behind the git repo in functionality.
 
-.. _PyPI: https://pypi.python.org/pypi/python-laosclient/
+.. _PyPI: https://pypi.python.org/pypi/python-picassoclient/
 
 Setup the client from source
 ----------------------------
 
-* Clone repository for python-laosclient::
+* Clone repository for python-picassoclient::
 
-    $ git clone https://github.com/iron-io/python-laosclient.git
-    $ cd python-laosclient
+    $ git clone https://github.com/iron-io/python-picassoclient.git
+    $ cd python-picassoclient
 
 * Setup a virtualenv
 
 .. note::
-   This is an optional step, but will allow laosclient's dependencies
+   This is an optional step, but will allow picassoclient's dependencies
    to be installed in a contained environment that can be easily deleted
-   if you choose to start over or uninstall laosclient.
+   if you choose to start over or uninstall picassoclient.
 
 ::
 
@@ -64,7 +63,7 @@ All further commands in this section should be run with the venv active:
 .. note::
    When ALL steps are complete, deactivate the virtualenv: $ deactivate
 
-* Install laosclient and its dependencies::
+* Install picassoclient and its dependencies::
 
     (venv) $ python setup.py develop
 
@@ -102,18 +101,18 @@ To use with keystone as the authentication system::
 
     >>> from keystoneclient.auth.identity import generic
     >>> from keystoneclient import session
-    >>> from laosclient import client
+    >>> from picassoclient import client
     >>> auth = generic.Password(auth_url=OS_AUTH_URL, username=OS_USERNAME, password=OS_PASSWORD, tenant_name=OS_TENANT_NAME)
     >>> keystone_session = session.Session(auth=auth)
-    >>> lc = client.Client('v1', session=keystone_session)
-    >>> lc.apps.list()
+    >>> picasso = client.Client('v1', session=keystone_session)
+    >>> picasso.apps.list()
     [...]
 
 
 * License: Apache License, Version 2.0
-* Documentation: https://github.com/iron-io/python-laosclient
-* Source: https://github.com/iron-io/python-laosclient
-* Bugs: https://github.com/iron-io/python-laosclient
+* Documentation: https://github.com/iron-io/python-picassoclient
+* Source: https://github.com/iron-io/python-picassoclient
+* Bugs: https://github.com/iron-io/python-picassoclient
 
 Testing
 -------

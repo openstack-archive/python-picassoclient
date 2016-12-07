@@ -73,7 +73,7 @@ class ShowAppRoute(command.ShowOne):
 
 
 class CreateAppRoute(command.ShowOne):
-    """Creates a new route"""
+    """Creates a new app route"""
     log = logging.getLogger(__name__ + ".CreateAppRoute")
 
     def get_parser(self, prog_name):
@@ -83,19 +83,23 @@ class CreateAppRoute(command.ShowOne):
         parser.add_argument("route", metavar="<route-path>",
                             help="App route name to create")
         parser.add_argument("type", metavar="<execution-type>",
-                            help="App route type to create")
+                            help="App route type to create",
+                            choices=["async", "sync"])
         parser.add_argument("image", metavar="<docker-image>",
                             help="Docker image to run")
-        parser.add_argument("--is-public", metavar="<is-public>",
-                            help="Public/Private route to create")
+        parser.add_argument("--is-public",
+                            help="Public/Private route to create",
+                            action="store_true", default=False)
         parser.add_argument("--memory", metavar="<memory>",
-                            help="App route memory to allocate, in Mbs")
+                            help="App route memory to allocate, in Mbs",
+                            type=int)
         parser.add_argument("--timeout", metavar="<timeout>",
-                            help="For how log to run the function")
+                            help="For how log to run the function",
+                            type=int)
         parser.add_argument("--max-concurrency", metavar="<max_concurrency>",
-                            help="Cold/Hot container to use.")
+                            help="Cold/Hot container to use.", type=int)
         parser.add_argument("--config", metavar="<config>",
-                            help="App route config")
+                            help="App route config", type=json.loads)
         return parser
 
     def take_action(self, parsed_args):
@@ -104,19 +108,12 @@ class CreateAppRoute(command.ShowOne):
         # required
         app, route, r_type, image = (parsed_args.app, parsed_args.route,
                                      parsed_args.type, parsed_args.image)
-        #optional
+        # optional
         is_public, memory, timeout, max_c, config = (
             parsed_args.is_public, parsed_args.memory,
             parsed_args.timeout, parsed_args.max_concurrency,
             parsed_args.config
         )
-        if config:
-            try:
-                config = json.loads(config)
-            except Exception as ex:
-                self.log.error("Invalid config JSON. "
-                               "Reason: {}".format(str(ex)))
-                raise ex
 
         new_route = fc.routes.create(app, r_type, route, image,
                                      is_public=is_public, memory=memory,
@@ -127,7 +124,7 @@ class CreateAppRoute(command.ShowOne):
 
 
 class DeleteAppRoute(command.Command):
-    """Deletes specific route"""
+    """Deletes specific app route"""
     log = logging.getLogger(__name__ + ".DeleteAppRoute")
 
     def get_parser(self, prog_name):
@@ -136,6 +133,7 @@ class DeleteAppRoute(command.Command):
                             help="Specifies which app to show")
         parser.add_argument("route", metavar="<route-path>",
                             help="App route to look for")
+        return parser
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
@@ -145,7 +143,7 @@ class DeleteAppRoute(command.Command):
 
 
 class UpdateAppRoute(command.ShowOne):
-    """Updates specific route"""
+    """Updates specific app route"""
     log = logging.getLogger(__name__ + ".UpdateAppRoute")
 
     def get_parser(self, prog_name):
@@ -157,41 +155,52 @@ class UpdateAppRoute(command.ShowOne):
         parser.add_argument("--image", metavar="<docker-image>",
                             help="New Docker image")
         parser.add_argument("--memory", metavar="<memory>",
-                            help="App route memory to allocate, in Mbs")
+                            help="App route memory to allocate, in Mbs",
+                            type=int)
         parser.add_argument("--timeout", metavar="<timeout>",
-                            help="For how log to run the function")
-        parser.add_argument("--max-concurrency", metavar="<max_concurrency>",
-                            name="max_concurrency",
+                            help="For how log to run the function",
+                            type=int)
+        parser.add_argument("--max-concurrency",
+                            metavar="<max-concurrency>",
+                            type=int,
                             help="Cold/Hot container to use.")
+        parser.add_argument("--type", metavar="<execution-type>",
+                            help="App route type to updae",
+                            choices=["async", "sync"])
         parser.add_argument("--config", metavar="<config>",
-                            help="App route config")
+                            help="App route config", type=json.loads)
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
         fc = self.app.client_manager.functions
-        #required
+        # required
         app, route = parsed_args.app, parsed_args.route
-        #optional
-        image, memory, max_c, config = (
+        # optional
+        image, memory, max_c, timeout, config = (
             parsed_args.image, parsed_args.memory,
-            parsed_args.max_concurrency, parsed_args.config)
+            parsed_args.max_concurrency, parsed_args.timeout,
+            parsed_args.config)
 
+        data = {}
+        if image:
+            data.update(image=image)
+        if memory:
+            data.update(memory=memory)
+        if max_c:
+            data.update(max_concurrency=max_c)
+        if timeout:
+            data.update(timeout=timeout)
         if config:
-            config = json.loads(config)
+            data.update(config=config)
 
-        updated_route = fc.routes.update(app, route, **{
-            "image": image,
-            "memory": memory,
-            "max_concurrency": max_c,
-            "config": config,
-        })
+        updated_route = fc.routes.update(app, route, **data)["route"]
         keys = list(updated_route.keys())
         return keys, utils.get_dict_properties(updated_route, keys)
 
 
 class ExecuteAppRoute(command.ShowOne):
-    """Runs execution against specific route"""
+    """Runs execution against specific app route"""
     log = logging.getLogger(__name__ + ".ExecuteAppRoute")
 
     def get_parser(self, prog_name):
@@ -200,16 +209,27 @@ class ExecuteAppRoute(command.ShowOne):
                             help="Specifies which app to show")
         parser.add_argument("route", metavar="<route-path>",
                             help="App route to look for")
+        parser.add_argument("--supply-auth-properties", action='store_true',
+                            help=("Whether to include auth properties "
+                                  "like OS_AUTH_URL and OS_TOKEN into "
+                                  "execution parameters data"))
         parser.add_argument("--data", metavar="<data>",
-                            help="Execution data")
+                            help="Execution data", type=json.loads)
         return parser
 
     def take_action(self, parsed_args):
         self.log.debug("take_action(%s)", parsed_args)
         fc = self.app.client_manager.functions
+        # required
         app, route, data = parsed_args.app, parsed_args.route, parsed_args.data
+        # optional
+        supply_auth_properties = parsed_args.supply_auth_properties
         if data:
             data = json.loads(data)
-        result = fc.routes.execute(app, route, **data)
+        else:
+            data = {}
+        result = fc.routes.execute(
+            app, route,
+            supply_auth_properties=supply_auth_properties, **data)
         clmns = list(result.keys())
         return clmns, utils.get_dict_properties(result, clmns)

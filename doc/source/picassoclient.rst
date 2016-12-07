@@ -1,17 +1,17 @@
-laosclient package
-==================
+picassoclient package
+=====================
 
 Subpackages
 -----------
 
 .. toctree::
 
-    laosclient.v1
+    picassoclient.v1
 
 Module contents
 ---------------
 
-.. automodule:: laosclient
+.. automodule:: picassoclient
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,7 +1,7 @@
-laosclient
-==========
+picassoclient
+=============
 
 .. toctree::
    :maxdepth: 4
 
-   laosclient
+   picassoclient

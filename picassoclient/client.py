@@ -14,7 +14,7 @@ import functools
 
 from keystoneauth1 import adapter
 
-from laosclient.common import utils
+from picassoclient.common import utils
 
 
 def Client(version, *args, **kwargs):
@@ -35,7 +35,7 @@ def construct_http_client(*args, **kwargs):
         service_type=kwargs.get('service_type', 'functions'),
         service_name=kwargs.get('service_name', 'functions'),
         interface=kwargs.get('endpoint_type', 'public').rstrip('URL'),
-        user_agent=kwargs.get('user_agent', 'python-laosclient'),
+        user_agent=kwargs.get('user_agent', 'python-picassoclient'),
         endpoint_override=kwargs.get('endpoint_override'),
         timeout=kwargs.get('timeout'),
     )

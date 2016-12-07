@@ -21,7 +21,7 @@ DEFAULT_SEARCH_API_VERSION = '1'
 API_VERSION_OPTION = 'os_functions_api_version'
 API_NAME = 'functions'
 API_VERSIONS = {
-    '1': 'laosclient.v1.client.Client',
+    '1': 'picassoclient.v1.client.Client',
 }
 
 
