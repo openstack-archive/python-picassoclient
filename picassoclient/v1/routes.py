@@ -24,11 +24,11 @@ class Routes(object):
         self.client = session_client
 
     @client.inject_project_id
-    def create(self, project_id: str, app_name: str,
-               execution_type: str, route_path: str, image: str,
-               is_public: bool=False, memory: int=None,
-               timeout: int=None, max_concurrency: int=None,
-               config: dict=None):
+    def create(self, project_id, app_name,
+               execution_type, route_path, image,
+               is_public=False, memory=None,
+               timeout=None, max_concurrency=None,
+               config=None):
         """
         Creates app route
 
@@ -73,7 +73,7 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def list(self, project_id: str, app_name: str):
+    def list(self, project_id, app_name):
         """
         Lists project-scoped app routes
 
@@ -87,7 +87,7 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def show(self, project_id: str, app_name: str, route_path: str):
+    def show(self, project_id, app_name, route_path):
         """
         Retrieves app route information
 
@@ -104,8 +104,8 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def update(self, project_id: str, app_name: str,
-               route_path: str, **data: str):
+    def update(self, project_id, app_name,
+               route_path, **data):
         """
         Updates route with provided data
 
@@ -124,7 +124,7 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def delete(self, project_id: str, app_name: str, route_path: str):
+    def delete(self, project_id, app_name, route_path):
         """
         Deletes app
 
@@ -141,7 +141,7 @@ class Routes(object):
         return response.json()
 
     @client.inject_project_id
-    def execute(self, project_id: str, app_name: str, route_path: str,
+    def execute(self, project_id, app_name, route_path,
                 supply_auth_properties: bool=False, **data: dict):
         """
         Runs execution against public/private routes

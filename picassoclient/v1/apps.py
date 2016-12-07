@@ -18,11 +18,11 @@ class Apps(object):
     apps_route = "/v1/{project_id}/apps"
     app_route = "/v1/{project_id}/apps/{app}"
 
-    def __init__(self, session_client: client.SessionClient):
+    def __init__(self, session_client):
         self.client = session_client
 
     @client.inject_project_id
-    def list(self, project_id: str):
+    def list(self, project_id):
         """
         Lists project-scoped apps
 
@@ -34,7 +34,7 @@ class Apps(object):
         return response.json()
 
     @client.inject_project_id
-    def show(self, project_id: str, app_name: str):
+    def show(self, project_id, app_name):
         """
         Shows project-scoped app info
 
@@ -48,8 +48,8 @@ class Apps(object):
         return response.json()
 
     @client.inject_project_id
-    def create(self, project_id: str, app_name: str,
-               config: dict=None):
+    def create(self, project_id, app_name,
+               config=None):
         """
         Creates project-scoped app
 
@@ -72,7 +72,7 @@ class Apps(object):
         return response.json()
 
     @client.inject_project_id
-    def update(self, project_id: str, app_name: str, **data: dict):
+    def update(self, project_id, app_name, **data):
         """
         Updates app
 
@@ -89,7 +89,7 @@ class Apps(object):
         return response.json()
 
     @client.inject_project_id
-    def delete(self, project_id: str, app_name: str):
+    def delete(self, project_id, app_name):
         """
         Deletes app
 
