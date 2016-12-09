@@ -167,6 +167,7 @@ class Routes(object):
                    route_path=route_path))
         if supply_auth_properties:
             data.update(OS_AUTH_URL=self.client.session.auth.auth_url,
-                        OS_TOKEN=self.client.get_token())
+                        OS_TOKEN=self.client.get_token(),
+                        OS_PROJECT_ID=project_id)
         response = self.client.post(url, json=data)
         return response.json()
