@@ -33,7 +33,7 @@ def construct_http_client(*args, **kwargs):
         auth=kwargs.get('auth'),
         region_name=kwargs.get('region_name'),
         service_type=kwargs.get('service_type', 'functions'),
-        service_name=kwargs.get('service_name', 'functions'),
+        service_name=kwargs.get('service_name', 'picasso'),
         interface=kwargs.get('endpoint_type', 'public').rstrip('URL'),
         user_agent=kwargs.get('user_agent', 'python-picassoclient'),
         endpoint_override=kwargs.get('endpoint_override'),
