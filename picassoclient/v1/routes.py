@@ -171,3 +171,23 @@ class Routes(object):
                         OS_PROJECT_ID=project_id)
         response = self.client.post(url, json=data)
         return response.json()
+
+    @client.inject_project_id
+    def expose_url(self, project_id, app_name, route_path):
+        """
+        Exposes fully-qualified function URL
+
+        :param app_name: App name
+        :param route_path: App route path
+        :return: function URL
+        :rtype: str
+        """
+        endpoint = self.client.get_endpoint()
+        route = self.show(app_name, route_path)
+        is_public = route["route"].get("is_public")
+        url = (self.public_execution.format(
+            app=app_name, route_path=route_path) if is_public else
+               self.private_execution.format(
+                   project_id=project_id, app=app_name,
+                   route_path=route_path))
+        return "{}{}".format(endpoint, url)

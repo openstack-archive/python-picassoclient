@@ -233,3 +233,22 @@ class ExecuteAppRoute(command.ShowOne):
             supply_auth_properties=supply_auth_properties, **data)
         clmns = list(result.keys())
         return clmns, utils.get_dict_properties(result, clmns)
+
+
+class ExposeAppRouteURL(command.Command):
+    """Deletes specific app route"""
+    log = logging.getLogger(__name__ + ".ExposeAppRouteURL")
+
+    def get_parser(self, prog_name):
+        parser = super(ExposeAppRouteURL, self).get_parser(prog_name)
+        parser.add_argument("app", metavar="<app-name>",
+                            help="Specifies which app to show")
+        parser.add_argument("route", metavar="<route-path>",
+                            help="App route to look for")
+        return parser
+
+    def take_action(self, parsed_args):
+        self.log.debug("take_action(%s)", parsed_args)
+        fc = self.app.client_manager.functions
+        app, route = parsed_args.app, parsed_args.route
+        print(fc.routes.expose_url(app, route))
