@@ -1,9 +1,9 @@
-.. python-laosclient documentation master file, created by
+.. python-picassoclient documentation master file, created by
    sphinx-quickstart on Tue Dec  6 17:37:53 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to python-laosclient's documentation!
+Welcome to python-picassoclient's documentation!
 =============================================
 
 Contents:
