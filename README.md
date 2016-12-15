@@ -83,7 +83,7 @@ Refer to the following code to use Keystone as the authentication backend:
 * License: Apache License, Version 2.0
 * Documentation: https://github.com/iron-io/python-picassoclient
 * Source: https://github.com/iron-io/python-picassoclient
-* Bugs: https://github.com/iron-io/python-picassoclient
+* Bugs: https://launchpad.net/python-picassoclient
 
 Testing
 -------
