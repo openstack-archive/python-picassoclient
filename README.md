@@ -5,8 +5,8 @@ OpenStack Functions Client Library
 This is a client library for Picasso built on the Picasso API. It
 provides a Python API (the ``picassoclient`` module).
 
-The project is hosted on [Launchpad](https://github.com/iron-io/python-picassoclient/issue),
-where bugs can be filed. The code is hosted on [GitHub](https://github.com/iron-io/python-picassoclient).
+The project is hosted on [Launchpad](https://bugs.launchpad.net/python-picassoclient),
+where bugs can be filed. The code is hosted on [GitHub](https://github.com/openstack/python-picassoclient).
 Patches must be submitted using [Gerrit](http://docs.openstack.org/infra/manual/developers.html#development-workflow),
 *not* Github pull requests.
 
@@ -25,7 +25,7 @@ and can be installed via `pip`.
 
 1. Clone the source repo
 
-        $ git clone https://github.com/iron-io/python-picassoclient.git
+        $ git clone https://github.com/openstack/python-picassoclient.git
         $ cd python-picassoclient
 
 2. Setup a Python virtualenv
@@ -81,8 +81,8 @@ Refer to the following code to use Keystone as the authentication backend:
 
 
 * License: Apache License, Version 2.0
-* Documentation: https://github.com/iron-io/python-picassoclient
-* Source: https://github.com/iron-io/python-picassoclient
+* Documentation: https://github.com/openstack/python-picassoclient
+* Source: https://github.com/openstack/python-picassoclient
 * Bugs: https://launchpad.net/python-picassoclient
 
 Testing
