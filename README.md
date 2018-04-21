@@ -14,7 +14,7 @@ python-picassoclient is licensed under the Apache License, like the rest of Open
 
 ## Install the client from PyPI
 
-The `python-picassoclient` package is published on [PyPI](https://pypi.python.org/pypi/python-picassoclient/)
+The `python-picassoclient` package is published on [PyPI](https://pypi.org/project/python-picassoclient/)
 and can be installed via `pip`.
 
     $ pip install python-picassoclient
